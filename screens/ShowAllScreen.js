@@ -18,7 +18,7 @@ const ShowAllScreen = (props) => {
   const handleDrawer = () => {
     navigation.openDrawer();
   };
-  const handleNavigate = (url) => {
+  const handleNavigate = (url, item) => {
     navigation.navigate(url, { id: item.id });
   };
   const handleToggleFav = (item) => {
@@ -36,7 +36,7 @@ const ShowAllScreen = (props) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          handleNavigate("DetailScreen");
+          handleNavigate("DetailScreen", item);
         }}
       >
         <View style={styles.item}>

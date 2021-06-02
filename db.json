@@ -460,48 +460,5 @@
     }
   ],
   "carts": [],
-  "favourites": [
-    {
-      "id": 1,
-      "name": "Iphone 12 Pro",
-      "image": "https://images.fpt.shop/unsafe/fit-in/800x800/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2020/10/14/637382726336418025_ip-12-pro-max-xanh-1.png",
-      "categoryId": "1",
-      "isFav": true,
-      "isBrand": true,
-      "isSale": true,
-      "price": "29.000.000 đ",
-      "size": "6,7 inch",
-      "ram": "32Gb",
-      "rate": 5,
-      "description": "Nổi bật với cụm camera sau được thiết kế đầy mới lạ, phần khuôn hình chữ nhật chứa bộ 3 camera ôm trọn cạnh trái của chiếc smartphone, viền khuôn cong uyển chuyển, hạn chế tối đa độ nhô ra so với mặt lưng, mang lại cái nhìn tổng thể hài hòa, độc đáo."
-    },
-    {
-      "id": 2,
-      "name": "SamSung Galaxy Note 20",
-      "image": "https://images.fpt.shop/unsafe/fit-in/214x214/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2020/8/5/637322682439532348_ss-note-20-ultra-5g-gold-dd.png",
-      "categoryId": "1",
-      "isFav": true,
-      "isBrand": true,
-      "isSale": false,
-      "price": "18.400.000 đ",
-      "size": "6,9 inch",
-      "ram": "8Gb",
-      "rate": 5,
-      "description": "Samsung Galaxy Note 20 Ultra được chế tác từ những vật liệu cao cấp hàng đầu hiện nay, với sự tỉ mỉ và chất lượng gia công thượng thừa, tạo nên chiếc điện thoại đẹp hơn những gì bạn có thể tưởng tượng."
-    },
-    {
-      "id": 3,
-      "name": "OPPO Find X3 Pro",
-      "image": "https://images.fpt.shop/unsafe/fit-in/214x214/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2021/5/14/637565961688766276_oppo-find-x3-pro-dd.jpg",
-      "categoryId": "1",
-      "isFav": true,
-      "isBrand": true,
-      "isSale": false,
-      "price": "27.000.000 đ",
-      "size": "6,7 inch",
-      "ram": "12Gb",
-      "rate": 5,
-      "description": "Sẵn sàng cùng bạn hướng tới tương lai với OPPO Find X3 Pro 5G, chiếc điện thoại sở hữu camera màu sắc trung thực, màn hình 120Hz siêu mượt, 1 tỷ màu sống động và hiệu năng đột phá với sức mạnh của con chip Qualcomm Snapdragon 888 hỗ trợ 5G."
-    }
-  ]
+  "favourites": []
 }
