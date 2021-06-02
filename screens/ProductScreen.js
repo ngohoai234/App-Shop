@@ -9,24 +9,34 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { actToggleCart, actToggleFav } from "../store/actions";
+import {
+  actBeginFetch,
+  actGetProducts,
+  actSuccessData,
+  actToggleCart,
+  actToggleFav,
+} from "../store/actions";
 import { Ionicons } from "@expo/vector-icons";
+import Loading from "./Loading";
 const ProductScreen = (props) => {
   const { navigation } = props;
-
   const products = useSelector((state) => state.products).filter(
     (product) => product.categoryId === props.route.params.categoryId
   );
-
+  const loading = useSelector((state) => state.loading);
   const dispatch = useDispatch();
   const handleAddCart = async (product) => {
-    dispatch(actToggleCart({ ...product, amount: 1 }));
+    await dispatch(actBeginFetch());
+    await dispatch(actToggleCart({ ...product, amount: 1 }));
+    dispatch(actSuccessData());
   };
   const handlePress = (item) => {
     navigation.navigate("DetailScreen", { id: item.id });
   };
   const handleToggleFav = async (item) => {
-    dispatch(actToggleFav(item));
+    await dispatch(actBeginFetch());
+    await dispatch(actToggleFav(item));
+    dispatch(actSuccessData());
   };
   const handleRenderItem = ({ item }) => {
     return (
@@ -102,13 +112,11 @@ const ProductScreen = (props) => {
       </TouchableOpacity>
     );
   };
-
-  if (!products.length) {
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text> Loading</Text>
-      </View>
-    );
+  useEffect(() => {
+    dispatch(actGetProducts());
+  }, []);
+  if (loading) {
+    return <Loading />;
   }
   return (
     <View style={styles.container}>

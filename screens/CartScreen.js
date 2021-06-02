@@ -15,10 +15,11 @@ import {
   actIncreaseAmount,
   actDecreaseAmount,
 } from "../store/actions";
-import api from "../api/api";
+import Loading from "./Loading";
 const CartScreen = (props) => {
   const { navigation } = props;
   const dispatch = useDispatch();
+  const loadingCart = useSelector((state) => state.loadingCart);
   const data = useSelector((state) => state.carts);
   const handleDrawer = () => {
     navigation.openDrawer();
@@ -160,6 +161,9 @@ const CartScreen = (props) => {
       ),
     });
   }, []);
+  if (loadingCart) {
+    return <Loading />;
+  }
   return (
     <View style={styles.container}>
       <FlatList

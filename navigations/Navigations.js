@@ -6,11 +6,10 @@ import HomeScreen from "../screens/HomeScreen";
 import ProductScreen from "../screens/ProductScreen";
 import DetailScreen from "../screens/DetailScreen";
 import FavouriteScreen from "../screens/FavouriteScreen";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import FilterScreen from "../screens/FilterScreen";
 import CartScreen from "../screens/CartScreen";
-import PRODUCTS from "./../data/products";
 import ShowAllScreen from "../screens/ShowAllScreen";
 import {
   actGetCarts,
@@ -18,7 +17,6 @@ import {
   actGetProducts,
 } from "./../store/actions";
 import { useSelector, useDispatch } from "react-redux";
-import api from "./../api/api";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -134,15 +132,19 @@ const showAll = () => (
   </Stack.Navigator>
 );
 const Navigations = () => {
+  const loading = useSelector((state) => state.loading);
   const dispatch = useDispatch();
   useEffect(() => {
-    const fetchApi = () => {
-      dispatch(actGetProducts());
-      dispatch(actGetFavourites());
-      dispatch(actGetCarts());
+    const fetchApi = async () => {
+      try {
+        await dispatch(actGetFavourites());
+        await dispatch(actGetCarts());
+      } catch (error) {}
     };
+
     fetchApi();
   }, []);
+
   return (
     <NavigationContainer>
       <Drawer.Navigator>

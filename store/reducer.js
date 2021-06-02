@@ -1,4 +1,3 @@
-import PRODUCTS from "./../data/products";
 import {
   ADD_CART,
   INCREASE_AMOUNT,
@@ -9,12 +8,27 @@ import {
   GET_CARTS,
   DELETE_CART,
   DECREASE_AMOUNT,
+  FAILURE_DATA,
+  SUCCESS_DATA,
+  BEGIN_FETCH,
+  GET_CATOGORIES,
+  BEGIN_FETCHFAV,
+  FAILURE_FAV,
+  SUCCESS_FAV,
+  BEGIN_CARTS,
+  FAILURE_CARTS,
+  SUCCESS_CATS,
 } from "./constants";
 const initialState = {
   products: [],
-  filterProducts: PRODUCTS,
   carts: [],
   favourites: [],
+  loading: true,
+  error: null,
+  loadingFav: true,
+  errorFav: null,
+  loadingCart: true,
+  errorCart: null,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -66,6 +80,36 @@ export default (state = initialState, { type, payload }) => {
       let product = { ...payload, isFav: true };
       let favourites = [...state.favourites, product];
       return { ...state, favourites };
+    }
+    // loading products
+    case SUCCESS_DATA: {
+      return { ...state, loading: false };
+    }
+    case FAILURE_DATA: {
+      return { ...state, loading: false, error: payload };
+    }
+    case BEGIN_FETCH: {
+      return { ...state, loading: true };
+    }
+    // loading Fav
+    case SUCCESS_FAV: {
+      return { ...state, loadingFav: false };
+    }
+    case FAILURE_FAV: {
+      return { ...state, loadingFav: false, errorFav: payload };
+    }
+    case BEGIN_FETCHFAV: {
+      return { ...state, loadingFav: true };
+    }
+    // carts
+    case SUCCESS_CATS: {
+      return { ...state, loadingCart: false };
+    }
+    case FAILURE_CARTS: {
+      return { ...state, loadingCart: false, errorCart: payload };
+    }
+    case BEGIN_CARTS: {
+      return { ...state, loadingCart: true };
     }
 
     default:

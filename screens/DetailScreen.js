@@ -10,16 +10,19 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { actToggleCart, actToggleFav } from "./../store/actions";
+import Loading from "./Loading";
 const DetailScreen = (props) => {
   const products = useSelector((state) => state.products);
   const favourites = useSelector((state) => state.favourites);
   const data = products.find((product) => product.id === props.route.params.id);
   let isFav = favourites.find((product) => product.id === data.id);
+  const loadingFav = useSelector((state) => state.loadingFav);
+  const loadingCart = useSelector((state) => state.loadingCart);
+
   const [color, setColor] = useState(isFav);
   const dispatch = useDispatch();
 
   const handlePressFav = (data) => {
-    // vấn đề gặp phải nhân vào phải sủa trong product
     dispatch(actToggleFav(data));
     setColor(!color);
   };
@@ -39,12 +42,8 @@ const DetailScreen = (props) => {
       ),
     });
   }, [props.navigation, color]);
-  if (!data) {
-    return (
-      <View>
-        <Text>Không có sản phẩm yêu thích nào</Text>
-      </View>
-    );
+  if (loadingFav || loadingCart) {
+    return <Loading />;
   }
   return (
     <ScrollView>

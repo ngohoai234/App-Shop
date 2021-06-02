@@ -10,9 +10,11 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { actDeleteFavourite, actToggleCart } from "../store/actions";
+import Loading from "./Loading";
 
 const FavouriteScreen = (props) => {
   const products = useSelector((state) => state.favourites);
+  const loadingFav = useSelector((state) => state.loadingFav);
   const dispatch = useDispatch();
   const { navigation } = props;
   const handleNavigate = (item) => {
@@ -121,6 +123,9 @@ const FavouriteScreen = (props) => {
       ),
     });
   }, []);
+  if (loadingFav) {
+    return <Loading />;
+  }
   return (
     <View style={styles.container}>
       <FlatList

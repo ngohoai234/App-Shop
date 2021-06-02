@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import api from "./../api/api";
 import {
   View,
@@ -9,6 +9,8 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
+import Loading from "./Loading";
+
 const HomeScreen = (props) => {
   const { navigation } = props;
   const [categories, setCategories] = useState([]);
@@ -28,6 +30,7 @@ const HomeScreen = (props) => {
     };
     fetchApi();
   }, []);
+  useEffect(() => {}, [categories]);
   const handleDrawer = () => {
     navigation.openDrawer();
   };
@@ -55,12 +58,8 @@ const HomeScreen = (props) => {
       </TouchableOpacity>
     );
   };
-  if (!categories.length) {
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text> Loading</Text>
-      </View>
-    );
+  if (!categories && !categories.length) {
+    return <Loading />;
   }
   return (
     <View style={styles.main}>

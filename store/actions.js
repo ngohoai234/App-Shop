@@ -9,45 +9,78 @@ import {
   DELETE_CART,
   DECREASE_AMOUNT,
   GET_FAVOURITES,
+  SUCCESS_DATA,
+  FAILURE_DATA,
+  BEGIN_FETCH,
+  BEGIN_FETCHFAV,
+  FAILURE_FAV,
+  SUCCESS_FAV,
+  SUCCESS_CATS,
+  FAILURE_CARTS,
+  BEGIN_CARTS,
 } from "./constants";
 
 export const actGetProducts = () => {
   return async (dispatch) => {
-    let { data } = await api.get(`/products`);
-    dispatch({
-      type: GET_PRODUCTS,
-      payload: data,
-    });
+    try {
+      dispatch(actBeginFetch());
+      let { data } = await api.get(`/products`);
+      dispatch({
+        type: GET_PRODUCTS,
+        payload: data,
+      });
+      dispatch(actSuccessData());
+    } catch (error) {
+      dispatch(actFailureData(error));
+    }
   };
 };
 
 export const actAddCart = (product) => {
   return async (dispatch) => {
-    await api.post(`/carts`, { ...product });
-    dispatch({
-      type: ADD_CART,
-      payload: product,
-    });
+    try {
+      dispatch(actBeginCarts());
+      await api.post(`/carts`, { ...product });
+      dispatch({
+        type: ADD_CART,
+        payload: product,
+      });
+      dispatch(actSuccessCarts());
+    } catch (error) {
+      dispatch(actFailureCarts(error));
+    }
   };
 };
 
 export const actGetCarts = () => {
   return async (dispatch) => {
-    let { data } = await api.get(`/carts`);
-    dispatch({
-      type: GET_CARTS,
-      payload: data,
-    });
+    await dispatch(actBeginCarts());
+    try {
+      let { data } = await api.get(`/carts`);
+      await dispatch({
+        type: GET_CARTS,
+        payload: data,
+      });
+      await dispatch(actSuccessCarts());
+    } catch (err) {
+      await dispatch(actFailureCarts(err));
+    }
   };
 };
 
 export const actDeleteCart = (product) => {
   return async (dispatch) => {
-    await api.delete(`/carts/${product.id}`);
-    dispatch({
-      type: DELETE_CART,
-      payload: product,
-    });
+    dispatch(actBeginCarts());
+    try {
+      await api.delete(`/carts/${product.id}`);
+      dispatch({
+        type: DELETE_CART,
+        payload: product,
+      });
+      dispatch(actSuccessCarts());
+    } catch (error) {
+      dispatch(actFailureCarts(error));
+    }
   };
 };
 
@@ -67,20 +100,30 @@ export const actToggleCart = (product) => {
 
 export const actIncreaseAmount = (product) => {
   return async (dispatch) => {
-    let { amount } = product;
-    amount += 1;
-    await api.put(`/carts/${product.id}`, { ...product, amount });
-    dispatch({ type: INCREASE_AMOUNT, payload: { ...product, amount } });
+    dispatch(actBeginCarts());
+    try {
+      let { amount } = product;
+      amount += 1;
+      await api.put(`/carts/${product.id}`, { ...product, amount });
+      dispatch({ type: INCREASE_AMOUNT, payload: { ...product, amount } });
+      dispatch(actSuccessCarts());
+    } catch (error) {
+      dispatch(actFailureCarts(error));
+    }
   };
 };
 
 export const actDecreaseAmount = (product) => {
   return async (dispatch) => {
-    let { amount } = product;
-    if (amount >= 1) {
+    dispatch(actBeginCarts());
+    try {
+      let { amount } = product;
       amount -= 1;
       await api.put(`/carts/${product.id}`, { ...product, amount });
-      dispatch({ type: DECREASE_AMOUNT, payload: { ...product, amount } });
+      dispatch({ type: INCREASE_AMOUNT, payload: { ...product, amount } });
+      dispatch(actSuccessCarts());
+    } catch (error) {
+      dispatch(actFailureCarts(error));
     }
   };
 };
@@ -89,32 +132,50 @@ export const actDecreaseAmount = (product) => {
 
 export const actGetFavourites = () => {
   return async (dispatch) => {
-    let { data } = await api.get(`/favourites`);
-    dispatch({
-      type: GET_FAVOURITES,
-      payload: data,
-    });
+    await dispatch(actBeginFav());
+    try {
+      let { data } = await api.get(`/favourites`);
+      await dispatch({
+        type: GET_FAVOURITES,
+        payload: data,
+      });
+      await dispatch(actSuccessFav());
+    } catch (err) {
+      dispatch(actFailureFav(err));
+    }
   };
 };
 // action 2 :  delete object trong favourites
 export const actDeleteFavourite = (product) => {
   return async (dispatch) => {
-    await Promise.all([api.delete(`/favourites/${product.id}`)]);
-    dispatch({
-      type: DELETE_FAVOURITE,
-      payload: product.id,
-    });
+    dispatch(actBeginFav());
+    try {
+      await Promise.all([api.delete(`/favourites/${product.id}`)]);
+      dispatch(actSuccessFav());
+      dispatch({
+        type: DELETE_FAVOURITE,
+        payload: product.id,
+      });
+    } catch (error) {
+      dispatch(actFailureFav(err));
+    }
   };
 };
 // add favourtie
 
 export const actAddFavourite = (product) => {
   return async (dispatch) => {
-    await api.post(`/favourites`, { ...product, isFav: true });
-    dispatch({
-      type: ADD_FAVOURITE,
-      payload: product,
-    });
+    dispatch(actBeginFav());
+    try {
+      await api.post(`/favourites`, { ...product, isFav: true });
+      dispatch({
+        type: ADD_FAVOURITE,
+        payload: product,
+      });
+      dispatch(actSuccessFav());
+    } catch (error) {
+      dispatch(actFailureFav(err));
+    }
   };
 };
 
@@ -130,5 +191,79 @@ export const actToggleFav = (product) => {
     } else {
       dispatch(actAddFavourite(product));
     }
+  };
+};
+// products
+export const actSuccessData = () => {
+  return (dispatch) => {
+    dispatch({
+      type: SUCCESS_DATA,
+    });
+  };
+};
+export const actFailureData = (err) => {
+  return (dispatch) => {
+    dispatch({
+      type: FAILURE_DATA,
+      payload: err,
+    });
+  };
+};
+
+export const actBeginFetch = () => {
+  return (dispatch) => {
+    dispatch({
+      type: BEGIN_FETCH,
+    });
+  };
+};
+
+// loading favourties
+export const actSuccessFav = () => {
+  return (dispatch) => {
+    dispatch({
+      type: SUCCESS_FAV,
+    });
+  };
+};
+export const actFailureFav = (err) => {
+  return (dispatch) => {
+    dispatch({
+      type: FAILURE_FAV,
+      payload: err,
+    });
+  };
+};
+
+export const actBeginFav = () => {
+  return (dispatch) => {
+    dispatch({
+      type: BEGIN_FETCHFAV,
+    });
+  };
+};
+
+// loading carts
+export const actSuccessCarts = () => {
+  return (dispatch) => {
+    dispatch({
+      type: SUCCESS_CATS,
+    });
+  };
+};
+export const actFailureCarts = (err) => {
+  return (dispatch) => {
+    dispatch({
+      type: FAILURE_CARTS,
+      payload: err,
+    });
+  };
+};
+
+export const actBeginCarts = () => {
+  return (dispatch) => {
+    dispatch({
+      type: BEGIN_CARTS,
+    });
   };
 };
